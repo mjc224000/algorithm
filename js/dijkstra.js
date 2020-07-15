@@ -19,7 +19,6 @@ makeMap('e', 'g', 7)
 makeMap('f', 'e', 3)
 makeMap('f', 'g', 24);
 makeMap('g', 'h', 21);
-console.log(map);
 let set = {};
 ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].forEach(function (item) {
     set[item] = 999;
@@ -27,19 +26,31 @@ let set = {};
 set['a'] = 0;
 
 function dijkstra(vertex) {
-    let traveled = [map[vertex]];
+    let traveled = [vertex];
     for (let i = 0; i < traveled.length; i++) {
-        let cur = traveled[i];
+        let cur = map[traveled[i]];
         for (let key in cur) {
             if (cur[key] + set[vertex] < set[key]) {
-                set[key] = cur[key] + set[vertex]
+                set[key] = cur[key] + set[key]
             }
         }
+        let min = 999;
+        let cheapest;
         for (let key in set) {
-
+            if (traveled.indexOf(key) === -1)
+            {
+                if (set[key] < min) {
+                    min = set[key];
+                    cheapest = key;
+                }
+            }
         }
+        if (cheapest)
+            if (traveled.indexOf(cheapest) === -1)
+                traveled.push(cheapest);
+
     }
 }
 
-dijkstra(map['a']);
-
+dijkstra('a');
+console.log(set);
